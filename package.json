@@ -1,6 +1,6 @@
 {
   "name": "@nikozyrev/relidate",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "Form validation library for React.",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/nikozyrev"
@@ -19,8 +19,12 @@
     "react": "^18.2.0",
     "rollup": "^4.1.4",
     "rollup-plugin-dts": "^6.1.0",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "tslib": "^2.6.2",
     "typescript": "^5.2.2"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17 || ^18"
   },
   "type": "module",
   "main": "dist/cjs/index.js",
