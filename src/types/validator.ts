@@ -1,5 +1,10 @@
-export type Validator<T> = (v: T) => boolean;
+import { FormFieldValue, FormState } from './form-state';
 
-export type FormValidators<S extends object> = {
-  [key in keyof S]?: Validator<S[key]>[];
+export type Validator<T extends FormFieldValue, S extends FormState> = (
+  value: T,
+  state: S
+) => boolean;
+
+export type FormValidators<S extends FormState> = {
+  [key in keyof S]?: Validator<S[key], S>[];
 };

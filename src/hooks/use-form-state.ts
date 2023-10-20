@@ -1,7 +1,7 @@
 import { Reducer, useCallback, useReducer } from 'react';
-import { ActionTypes } from '../types/form-state';
+import { ActionTypes, FormState } from '../types/form-state';
 
-export function useFormState<S extends object>({
+export function useFormState<S extends FormState>({
   initialState,
 }: {
   initialState: S;

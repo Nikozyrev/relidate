@@ -1,8 +1,9 @@
 import { validateField } from '../helpers/validate';
+import { FormState } from '../types/form-state';
 import { FormValidators } from '../types/validator';
 import { useFormState } from './use-form-state';
 
-export function useValidatedForm<S extends object>({
+export function useValidatedForm<S extends FormState>({
   initialState,
   validators,
 }: {
@@ -20,8 +21,9 @@ export function useValidatedForm<S extends object>({
         {
           value,
           isValid: validateField(
-            validators ? validators[key] || [] : [],
-            value
+            validators && validators[key], // || [] : []
+            value,
+            formState.state
           ),
         },
       ] as const
