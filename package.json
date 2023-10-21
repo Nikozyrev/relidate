@@ -1,6 +1,6 @@
 {
   "name": "@nikozyrev/relidate",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Form validation library for React.",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/nikozyrev"
@@ -32,5 +32,16 @@
   "files": [
     "dist"
   ],
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./validators": {
+      "types": "./dist/types/validators/validators.d.ts",
+      "import": "./dist/validators.js"
+    }
+  }
 }
