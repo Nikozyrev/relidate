@@ -1,39 +1,31 @@
-import { Reducer, useCallback, useReducer } from 'react';
-import { ActionTypes, FormState } from '../types/form-state';
+import { Reducer, useReducer } from 'react';
+import { ActionTypes, FormAction, FormState } from '../types/form-state';
+
+const createReducer =
+  <S extends FormState>(initialState: S): Reducer<S, FormAction<S>> =>
+  (state, action) => {
+    switch (action.type) {
+      case ActionTypes.UPDATE:
+        if (!action.payload) return state;
+        return {
+          ...state,
+          [action.payload.inputName]: action.payload.value,
+        };
+      case ActionTypes.RESET:
+        return {
+          ...initialState,
+        };
+      default:
+        return state;
+    }
+  };
 
 export function useFormState<S extends FormState>({
   initialState,
 }: {
   initialState: S;
 }) {
-  const reducer: Reducer<
-    typeof initialState,
-    {
-      type: ActionTypes;
-      payload?: {
-        inputName: keyof S;
-        value: S[keyof S];
-      };
-    }
-  > = useCallback(
-    (state, action) => {
-      switch (action.type) {
-        case ActionTypes.UPDATE:
-          if (!action.payload) return state;
-          return {
-            ...state,
-            [action.payload.inputName]: action.payload.value,
-          };
-        case ActionTypes.RESET:
-          return {
-            ...initialState,
-          };
-        default:
-          return state;
-      }
-    },
-    [initialState]
-  );
+  const reducer = createReducer(initialState);
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
