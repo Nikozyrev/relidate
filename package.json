@@ -1,9 +1,10 @@
 {
   "name": "@nikozyrev/relidate",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Form validation library for React.",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/nikozyrev"
+    "registry": "https://npm.pkg.github.com/nikozyrev",
+    "access": "public"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
