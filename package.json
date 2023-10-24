@@ -1,12 +1,22 @@
 {
   "name": "relidate",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Form validation library for React.",
+  "keywords": [
+    "react",
+    "react-hooks",
+    "forms",
+    "validation",
+    "typescript"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "rollup": "rollup -c"
   },
   "author": "nikozyrev",
+  "repository": {
+    "url": "https://github.com/Nikozyrev/relidate"
+  },
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^25.0.7",
@@ -24,8 +34,8 @@
     "react": "^16.8.0 || ^17 || ^18"
   },
   "type": "module",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "files": [
     "dist"
   ],
