@@ -1,13 +1,16 @@
-import { FormFieldValue, FormState } from '../types/form-state';
+import { FormFieldValue, FormInitState } from '../types/form-state';
 import { FormValidators, Validator } from '../types/validator';
 
-export const validateField = <T extends FormFieldValue, S extends FormState>(
+export const validateField = <
+  T extends FormFieldValue,
+  S extends FormInitState
+>(
   validators: Validator<T, S>[] | undefined,
   value: T,
   state: S
 ) => (validators ? validators.every((f) => f(value, state)) : true);
 
-export const validateForm = <S extends FormState>(
+export const validateForm = <S extends FormInitState>(
   state: S,
   validators?: FormValidators<S>
 ) => {
