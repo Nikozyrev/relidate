@@ -7,36 +7,43 @@ import {
 } from '../types/form-state';
 import { FormValidators } from '../types/validator';
 import { validateField } from './validate';
-import { reduceFormState } from './prepare-form-state';
 
-export const createReducer =
-  <IS extends FormInitState, S extends FormState<IS>>(
-    initialState: S,
-    validators: FormValidators<IS> | undefined
-  ): Reducer<S, FormAction<IS>> =>
-  (state, action) => {
+export function createReducer<IS extends FormInitState>(
+  initialState: FormState<IS>,
+  validators: FormValidators<IS> | undefined
+): Reducer<FormState<IS>, FormAction<IS>> {
+  return (state, action) => {
     switch (action.type) {
       case ActionTypes.UPDATE:
         if (!action.payload) return state;
-        const { inputName, value } = action.payload;
+        const { field, value } = action.payload;
 
         return {
           ...state,
-          [inputName]: {
-            ...state[inputName],
-            value: value,
-            isValid: validateField(
-              validators && validators[inputName],
-              value,
-              reduceFormState(state)
-            ),
+          values: {
+            ...state.values,
+            [field]: value,
+          },
+          fields: {
+            ...state.fields,
+            [field]: {
+              ...state.fields[field],
+              isValid: validateField(
+                validators && validators[field],
+                value,
+                state.values
+              ),
+            },
           },
         };
+
       case ActionTypes.RESET:
         return {
           ...initialState,
         };
+
       default:
         return state;
     }
   };
+}

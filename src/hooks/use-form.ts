@@ -1,32 +1,29 @@
 import { useReducer } from 'react';
-import { ActionTypes, FormInitState, FormState } from '../types/form-state';
+import { ActionTypes, FormInitState } from '../types/form-state';
 import { createReducer } from '../helpers/form-reducer';
-import {
-  prepareFormState,
-  reduceFormState,
-} from '../helpers/prepare-form-state';
+import { prepareFormState } from '../helpers/prepare-form-state';
 import { FormValidators } from '../types/validator';
 
-export function useForm<IS extends FormInitState, S extends FormState<IS>>({
+export function useForm<IS extends FormInitState>({
   initialState,
   validators,
 }: {
   initialState: IS;
   validators?: FormValidators<IS>;
 }) {
-  const formState = prepareFormState<IS, S>(initialState, validators);
+  const formState = prepareFormState(initialState, validators);
 
   const reducer = createReducer(formState, validators);
 
   const [state, dispatch] = useReducer(reducer, formState);
 
-  const isValid = Object.keys(state).every((key) => state[key].isValid);
+  const isValid = Object.keys(state).every((key) => state.fields[key].isValid);
 
-  const update = <T extends keyof IS>(inputName: T, value: IS[T]) => {
+  const update = <T extends keyof IS>(field: T, value: IS[T]) => {
     dispatch({
       type: ActionTypes.UPDATE,
       payload: {
-        inputName,
+        field,
         value,
       },
     });
@@ -39,8 +36,7 @@ export function useForm<IS extends FormInitState, S extends FormState<IS>>({
   };
 
   return {
-    getState: () => reduceFormState<IS, S>(state),
-    fields: state,
+    ...state,
     isValid,
     update,
     reset,

@@ -1,19 +1,15 @@
-import { FormInitState, FormState } from '../types/form-state';
+import { FormFields, FormInitState, FormState } from '../types/form-state';
 import { FormValidators } from '../types/validator';
 import { validateField } from './validate';
 
-export const prepareFormState = <
-  IS extends FormInitState,
-  S extends FormState<IS>
->(
+export const prepareFormState = <IS extends FormInitState>(
   state: IS,
   validators?: FormValidators<IS>
-): S =>
-  (Object.keys(state) as (keyof IS)[]).reduce(
+): FormState<IS> => {
+  const fields = (Object.keys(state) as (keyof IS)[]).reduce(
     (acc, key) => ({
       ...acc,
       key: {
-        value: state[key],
         touched: false,
         isValid: validateField(
           validators && validators[key],
@@ -22,16 +18,8 @@ export const prepareFormState = <
         ),
       },
     }),
-    {} as S
+    {} as FormFields<IS>
   );
 
-export const reduceFormState = <
-  IS extends FormInitState,
-  S extends FormState<IS>
->(
-  state: S
-): IS =>
-  (Object.keys(state) as (keyof S)[]).reduce(
-    (acc, key) => ({ ...acc, key: state[key].value }),
-    {} as IS
-  );
+  return { values: state, fields };
+};

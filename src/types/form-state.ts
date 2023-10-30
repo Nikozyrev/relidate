@@ -2,14 +2,18 @@ export type FormFieldValue = string | number | Date | undefined | null;
 
 export type FormInitState = Record<string, FormFieldValue>;
 
-export type FormFieldState<S extends FormInitState, K extends keyof S> = {
-  value: S[K];
+export type FormFieldState = {
   touched: boolean;
   isValid: boolean;
 };
 
+export type FormFields<S extends FormInitState> = {
+  [key in keyof S]: FormFieldState;
+};
+
 export type FormState<S extends FormInitState> = {
-  [key in keyof S]: FormFieldState<S, key>;
+  values: S;
+  fields: FormFields<S>;
 };
 
 export enum ActionTypes {
@@ -20,7 +24,7 @@ export enum ActionTypes {
 export type FormAction<S extends FormInitState> = {
   type: ActionTypes;
   payload?: {
-    inputName: keyof S;
+    field: keyof S;
     value: S[keyof S];
   };
 };
