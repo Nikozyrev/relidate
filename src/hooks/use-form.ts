@@ -17,7 +17,9 @@ export function useForm<IS extends FormInitState>({
 
   const [state, dispatch] = useReducer(reducer, formState);
 
-  const isValid = Object.keys(state).every((key) => state.fields[key].isValid);
+  const isValid = Object.keys(state.fields).every(
+    (key) => state.fields[key].isValid
+  );
 
   const update = <T extends keyof IS>(field: T, value: IS[T]) => {
     dispatch({
