@@ -5,11 +5,11 @@ Form validation library for React.
 ### Quickstart
 
 ```jsx
-import { useValidatedForm } from 'relidate';
+import { useForm } from 'relidate';
 import { minLength, required } from 'relidate/validators';
 
 export function SignUpForm() {
-  const { fields, update, isValid } = useValidatedForm({
+  const { fields, update, isValid } = useForm({
     initialState: {
       email: '',
       password: '',
@@ -18,7 +18,7 @@ export function SignUpForm() {
     validators: {
       email: [required],
       password: [required, minLength(4)],
-      confirmPassword: [required, (v, s) => v === s.password],
+      confirmPassword: [required, (value, state) => value === state.password],
     },
   });
 
