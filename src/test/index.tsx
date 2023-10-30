@@ -6,6 +6,7 @@ function TestComponent() {
     values: { age, name },
     fields,
     update,
+    touch,
   } = useForm({
     initialState: {
       name: '',
@@ -23,12 +24,14 @@ function TestComponent() {
         type="text"
         value={name}
         onChange={(e) => update('name', e.target.value)}
+        onBlur={() => touch('name')}
       />
 
       <input
         type="text"
         value={age}
         onChange={(e) => update('age', Number(e.target.value))}
+        onBlur={() => touch('age')}
       />
     </form>
   );

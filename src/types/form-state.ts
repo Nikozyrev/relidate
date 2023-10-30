@@ -19,12 +19,13 @@ export type FormState<S extends FormInitState> = {
 export enum ActionTypes {
   UPDATE = 'UPDATE',
   RESET = 'RESET',
+  TOUCHED = 'TOUCHED',
 }
 
 export type FormAction<S extends FormInitState> = {
   type: ActionTypes;
   payload?: {
-    field: keyof S;
-    value: S[keyof S];
+    field?: keyof S;
+    value?: S[keyof S];
   };
 };

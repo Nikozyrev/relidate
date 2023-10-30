@@ -13,10 +13,12 @@ export function createReducer<IS extends FormInitState>(
   validators: FormValidators<IS> | undefined
 ): Reducer<FormState<IS>, FormAction<IS>> {
   return (state, action) => {
+    const field = action.payload?.field;
+    const value = action.payload?.value;
+
     switch (action.type) {
       case ActionTypes.UPDATE:
-        if (!action.payload) return state;
-        const { field, value } = action.payload;
+        if (!(field && value)) return state;
 
         return {
           ...state,
@@ -33,6 +35,20 @@ export function createReducer<IS extends FormInitState>(
                 value,
                 state.values
               ),
+            },
+          },
+        };
+
+      case ActionTypes.TOUCHED:
+        if (!field) return state;
+
+        return {
+          ...state,
+          fields: {
+            ...state.fields,
+            [field]: {
+              ...state.fields[field],
+              touched: true,
             },
           },
         };

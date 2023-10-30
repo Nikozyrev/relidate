@@ -29,6 +29,15 @@ export function useForm<IS extends FormInitState>({
     });
   };
 
+  const touch = <T extends keyof IS>(field: T) => {
+    dispatch({
+      type: ActionTypes.TOUCHED,
+      payload: {
+        field,
+      },
+    });
+  };
+
   const reset = () => {
     dispatch({
       type: ActionTypes.RESET,
@@ -40,5 +49,6 @@ export function useForm<IS extends FormInitState>({
     isValid,
     update,
     reset,
+    touch,
   };
 }

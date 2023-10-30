@@ -9,7 +9,12 @@ import { useForm } from 'relidate';
 import { minLength, required } from 'relidate/validators';
 
 export function SignUpForm() {
-  const { fields, update, isValid } = useForm({
+  const {
+    values: { email, password, confirmPassword },
+    fields,
+    update,
+    isValid,
+  } = useForm({
     initialState: {
       email: '',
       password: '',
@@ -28,19 +33,19 @@ export function SignUpForm() {
       <input
         type="text"
         placeholder="Email"
-        value={fields.email.value}
+        value={email}
         onChange={(e) => update('email', e.target.value)}
       />
       <input
         type="password"
         placeholder="Password"
-        value={fields.password.value}
+        value={password}
         onChange={(e) => update('password', e.target.value)}
       />
       <input
         type="password"
         placeholder="Confirm password"
-        value={fields.confirmPassword.value}
+        value={confirmPassword}
         onChange={(e) => update('confirmPassword', e.target.value)}
       />
       <button type="submit" disabled={!isValid}>
