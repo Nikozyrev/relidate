@@ -3,8 +3,7 @@ import { useForm } from '../hooks/use-form';
 
 function TestComponent() {
   const {
-    values: { age, name },
-    fields,
+    fields: { age, name },
     update,
     touch,
   } = useForm({
@@ -22,14 +21,14 @@ function TestComponent() {
     <form>
       <input
         type="text"
-        value={name}
+        value={name.value}
         onChange={(e) => update('name', e.target.value)}
         onBlur={() => touch('name')}
       />
 
       <input
         type="text"
-        value={age}
+        value={age.value}
         onChange={(e) => update('age', Number(e.target.value))}
         onBlur={() => touch('age')}
       />

@@ -23,3 +23,19 @@ export const prepareFormState = <IS extends FormInitState>(
 
   return { values: state, fields };
 };
+
+export const combineFormState = <
+  IS extends FormInitState,
+  S extends FormState<IS>
+>(
+  state: S
+) =>
+  Object.keys(state.fields).reduce(
+    (acc, key) => ({
+      ...acc,
+      [key]: { ...state.fields[key], value: state.values[key] },
+    }),
+    {} as {
+      [key in keyof IS]: { value: IS[key]; touched: boolean; isValid: boolean };
+    }
+  );

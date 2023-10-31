@@ -36,6 +36,7 @@ export function createReducer<IS extends FormInitState>(
       case ActionTypes.TOUCHED:
         const { field: f } = action.payload;
         if (!f) return state;
+        if (state.fields[f].touched) return state;
 
         return {
           ...state,

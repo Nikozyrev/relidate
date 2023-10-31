@@ -1,9 +1,10 @@
-import { useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 import { FormInitState } from '../types/form-state';
 import { FormValidators } from '../types/validator';
 import { ActionTypes } from '../types/form-actions';
 import { createReducer } from '../helpers/form-reducer';
-import { prepareFormState } from '../helpers/prepare-form-state';
+import { combineFormState, prepareFormState } from '../helpers/form-state';
+import { validateForm } from '../helpers/validate';
 
 export function useForm<IS extends FormInitState>({
   initialState,
@@ -18,37 +19,43 @@ export function useForm<IS extends FormInitState>({
 
   const [state, dispatch] = useReducer(reducer, formState);
 
-  const isValid = Object.keys(state.fields).every(
-    (key) => state.fields[key].isValid
+  const isValid = validateForm(state);
+
+  const fields = combineFormState<IS, typeof state>(state);
+
+  const update = useCallback(
+    <T extends keyof IS>(field: T, value: IS[T]) =>
+      dispatch({
+        type: ActionTypes.UPDATE,
+        payload: {
+          field,
+          value,
+        },
+      }),
+    []
   );
 
-  const update = <T extends keyof IS>(field: T, value: IS[T]) => {
-    dispatch({
-      type: ActionTypes.UPDATE,
-      payload: {
-        field,
-        value,
-      },
-    });
-  };
+  const touch = useCallback(
+    <T extends keyof IS>(field: T) =>
+      dispatch({
+        type: ActionTypes.TOUCHED,
+        payload: {
+          field,
+        },
+      }),
+    []
+  );
 
-  const touch = <T extends keyof IS>(field: T) => {
-    dispatch({
-      type: ActionTypes.TOUCHED,
-      payload: {
-        field,
-      },
-    });
-  };
-
-  const reset = () => {
-    dispatch({
-      type: ActionTypes.RESET,
-    });
-  };
+  const reset = useCallback(
+    () =>
+      dispatch({
+        type: ActionTypes.RESET,
+      }),
+    []
+  );
 
   return {
-    ...state,
+    fields,
     isValid,
     update,
     reset,
