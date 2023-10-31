@@ -1,8 +1,9 @@
 import { useReducer } from 'react';
-import { ActionTypes, FormInitState } from '../types/form-state';
+import { FormInitState } from '../types/form-state';
+import { FormValidators } from '../types/validator';
+import { ActionTypes } from '../types/form-actions';
 import { createReducer } from '../helpers/form-reducer';
 import { prepareFormState } from '../helpers/prepare-form-state';
-import { FormValidators } from '../types/validator';
 
 export function useForm<IS extends FormInitState>({
   initialState,

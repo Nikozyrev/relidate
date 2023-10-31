@@ -9,7 +9,7 @@ export const prepareFormState = <IS extends FormInitState>(
   const fields = (Object.keys(state) as (keyof IS)[]).reduce(
     (acc, key) => ({
       ...acc,
-      key: {
+      [key]: {
         touched: false,
         isValid: validateField(
           validators && validators[key],

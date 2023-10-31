@@ -1,11 +1,7 @@
 import { Reducer } from 'react';
-import {
-  FormState,
-  FormAction,
-  ActionTypes,
-  FormInitState,
-} from '../types/form-state';
+import { FormState, FormInitState } from '../types/form-state';
 import { FormValidators } from '../types/validator';
+import { FormAction, ActionTypes } from '../types/form-actions';
 import { validateField } from './validate';
 
 export function createReducer<IS extends FormInitState>(
@@ -13,12 +9,10 @@ export function createReducer<IS extends FormInitState>(
   validators: FormValidators<IS> | undefined
 ): Reducer<FormState<IS>, FormAction<IS>> {
   return (state, action) => {
-    const field = action.payload?.field;
-    const value = action.payload?.value;
-
     switch (action.type) {
       case ActionTypes.UPDATE:
-        if (!(field && value)) return state;
+        const { field, value } = action.payload;
+        if (!field) return state;
 
         return {
           ...state,
@@ -40,14 +34,15 @@ export function createReducer<IS extends FormInitState>(
         };
 
       case ActionTypes.TOUCHED:
-        if (!field) return state;
+        const { field: f } = action.payload;
+        if (!f) return state;
 
         return {
           ...state,
           fields: {
             ...state.fields,
-            [field]: {
-              ...state.fields[field],
+            [f]: {
+              ...state.fields[f],
               touched: true,
             },
           },
