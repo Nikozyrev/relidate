@@ -54,9 +54,12 @@ export function useForm<IS extends FormInitState>({
     []
   );
 
+  const getState = () => state.values;
+
   return {
     fields,
     isValid,
+    getState,
     update,
     reset,
     touch,
