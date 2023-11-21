@@ -59,7 +59,7 @@ export function useForm<IS extends FormInitState>({
 
   const register = <T extends keyof IS>(field: T) => ({
     onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-      update(field, convertValue(initialState, field, e.target.value)),
+      update(field, convertValue(initialState, field, e.target)),
     onBlur: () => touch(field),
     value: state.values[field],
   });

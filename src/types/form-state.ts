@@ -1,4 +1,10 @@
-export type FormFieldValue = string | number | Date | undefined | null;
+export type FormFieldValue =
+  | string
+  | number
+  | boolean
+  | Date
+  | undefined
+  | null;
 
 export type FormInitState = Record<string, FormFieldValue>;
 
