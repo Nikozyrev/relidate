@@ -11,7 +11,9 @@ import { minLength, required } from 'relidate/validators';
 export function SignUpForm() {
   const {
     fields: { email, password, confirmPassword },
+    register,
     update,
+    touch,
     isValid,
   } = useForm({
     initialState: {
@@ -21,7 +23,7 @@ export function SignUpForm() {
     },
     validators: {
       email: [required],
-      password: [required, minLength(4)],
+      password: [required, minLength(8)],
       confirmPassword: [required, (value, state) => value === state.password],
     },
   });
@@ -30,22 +32,25 @@ export function SignUpForm() {
     <form>
       <h3>Sign Up</h3>
       <input
-        type="text"
+        type="email"
         placeholder="Email"
-        value={email.value}
-        onChange={(e) => update('email', e.target.value)}
+        // Returns value, onChange, onBlur
+        {...register('email')}
       />
       <input
         type="password"
         placeholder="Password"
+        // Or you can register those fields manually
         value={password.value}
         onChange={(e) => update('password', e.target.value)}
+        onBlur={() => touch('password')}
       />
       <input
         type="password"
         placeholder="Confirm password"
-        value={confirmPassword.value}
-        onChange={(e) => update('confirmPassword', e.target.value)}
+        {...register('confirmPassword')}
+        // Add conditional classes
+        className={confirmPassword.isValid ? 'valid' : ''}
       />
       <button type="submit" disabled={!isValid}>
         Sign Up

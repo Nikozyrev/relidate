@@ -1,37 +1,54 @@
 import React from 'react';
 import { useForm } from '../hooks/use-form';
+import { required, minLength } from '../validators/validators';
 
-function TestComponent() {
+export function SignUpForm() {
   const {
-    fields: { age, name },
+    fields: { email, password, confirmPassword },
+    register,
     update,
     touch,
+    isValid,
   } = useForm({
     initialState: {
-      name: '',
-      age: 0,
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
     validators: {
-      age: [(v: number) => !!v],
-      name: [(v: string) => !!v],
+      email: [required],
+      password: [required, minLength(8)],
+      confirmPassword: [required, (value, state) => value === state.password],
     },
   });
 
   return (
     <form>
+      <h3>Sign Up</h3>
       <input
-        type="text"
-        value={name.value}
-        onChange={(e) => update('name', e.target.value)}
-        onBlur={() => touch('name')}
+        type="email"
+        placeholder="Email"
+        // Returns value, onChange, onBlur
+        {...register('email')}
       />
-
       <input
-        type="text"
-        value={age.value}
-        onChange={(e) => update('age', Number(e.target.value))}
-        onBlur={() => touch('age')}
+        type="password"
+        placeholder="Password"
+        // Or you can register those fields manually
+        value={password.value}
+        onChange={(e) => update('password', e.target.value)}
+        onBlur={() => touch('password')}
       />
+      <input
+        type="password"
+        placeholder="Confirm password"
+        {...register('confirmPassword')}
+        // Add conditional classes
+        className={confirmPassword.isValid ? 'valid' : ''}
+      />
+      <button type="submit" disabled={!isValid}>
+        Sign Up
+      </button>
     </form>
   );
 }

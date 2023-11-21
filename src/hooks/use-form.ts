@@ -5,6 +5,7 @@ import { ActionTypes } from '../types/form-actions';
 import { createReducer } from '../helpers/form-reducer';
 import { combineFormState, prepareFormState } from '../helpers/form-state';
 import { validateForm } from '../helpers/validate';
+import { convertValue } from '../helpers/value';
 
 export function useForm<IS extends FormInitState>({
   initialState,
@@ -56,10 +57,18 @@ export function useForm<IS extends FormInitState>({
 
   const getState = () => state.values;
 
+  const register = <T extends keyof IS>(field: T) => ({
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+      update(field, convertValue(initialState, field, e.target.value)),
+    onBlur: () => touch(field),
+    value: state.values[field],
+  });
+
   return {
     fields,
     isValid,
     getState,
+    register,
     update,
     reset,
     touch,
