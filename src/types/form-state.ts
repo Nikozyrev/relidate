@@ -10,7 +10,6 @@ export type FormInitState = Record<string, FormFieldValue>;
 
 export type FormFieldState = {
   touched: boolean;
-  isValid: boolean;
 };
 
 export type FormFields<S extends FormInitState> = {

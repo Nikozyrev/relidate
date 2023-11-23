@@ -4,6 +4,7 @@ import { useForm } from '../hooks/use-form';
 import { required, minLength } from '../validators/validators';
 
 function SignUpForm() {
+  console.time('hook');
   const {
     fields: { email, password, confirmPassword },
     register,
@@ -22,6 +23,7 @@ function SignUpForm() {
       confirmPassword: [required, (value, state) => value === state.password],
     },
   });
+  console.timeEnd('hook');
 
   return (
     <form style={styles.form}>
@@ -62,5 +64,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     gap: '10px',
     maxWidth: '500px',
+    padding: '15px',
+    border: '1px solid black',
   },
 };

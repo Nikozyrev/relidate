@@ -14,15 +14,15 @@ export function useForm<IS extends FormInitState>({
   initialState: IS;
   validators?: FormValidators<IS>;
 }) {
-  const formState = prepareFormState(initialState, validators);
+  const formState = prepareFormState(initialState);
 
-  const reducer = createReducer(formState, validators);
+  const reducer = createReducer(formState);
 
   const [state, dispatch] = useReducer(reducer, formState);
 
-  const isValid = validateForm(state);
+  const { validatedState, isValid } = validateForm(state.values, validators);
 
-  const fields = combineFormState<IS, typeof state>(state);
+  const fields = combineFormState<IS, typeof state>(state, validatedState);
 
   const update = useCallback(
     <T extends keyof IS>(field: T, value: IS[T]) =>

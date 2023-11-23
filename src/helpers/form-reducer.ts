@@ -1,12 +1,9 @@
 import { Reducer } from 'react';
 import { FormState, FormInitState } from '../types/form-state';
-import { FormValidators } from '../types/validator';
 import { FormAction, ActionTypes } from '../types/form-actions';
-import { validateField } from './validate';
 
 export function createReducer<IS extends FormInitState>(
-  initialState: FormState<IS>,
-  validators: FormValidators<IS> | undefined
+  initialState: FormState<IS>
 ): Reducer<FormState<IS>, FormAction<IS>> {
   return (state, action) => {
     switch (action.type) {
@@ -19,17 +16,6 @@ export function createReducer<IS extends FormInitState>(
           values: {
             ...state.values,
             [field]: value,
-          },
-          fields: {
-            ...state.fields,
-            [field]: {
-              ...state.fields[field],
-              isValid: validateField(
-                validators && validators[field],
-                value,
-                state.values
-              ),
-            },
           },
         };
 
