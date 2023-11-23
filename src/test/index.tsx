@@ -1,8 +1,9 @@
 import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { useForm } from '../hooks/use-form';
 import { required, minLength } from '../validators/validators';
 
-export function SignUpForm() {
+function SignUpForm() {
   const {
     fields: { email, password, confirmPassword },
     register,
@@ -23,7 +24,7 @@ export function SignUpForm() {
   });
 
   return (
-    <form>
+    <form style={styles.form}>
       <h3>Sign Up</h3>
       <input
         type="email"
@@ -52,3 +53,14 @@ export function SignUpForm() {
     </form>
   );
 }
+
+ReactDOM.createRoot(document.getElementById('root')!).render(<SignUpForm />);
+
+const styles: Record<string, React.CSSProperties> = {
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+    maxWidth: '500px',
+  },
+};

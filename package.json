@@ -11,7 +11,8 @@
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "rollup": "rollup -c"
+    "rollup": "rollup -c",
+    "dev": "rollup -c ./rollup.dev.config.js -w"
   },
   "author": "nikozyrev",
   "repository": {
@@ -19,11 +20,17 @@
   },
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.23.3",
+    "@babel/preset-react": "^7.23.3",
+    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-commonjs": "^25.0.7",
     "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
     "@rollup/plugin-typescript": "^11.1.5",
     "@types/react": "^18.2.29",
+    "@types/react-dom": "^18.2.17",
     "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "rollup": "^4.1.4",
     "rollup-plugin-dts": "^6.1.0",
     "rollup-plugin-peer-deps-external": "^2.2.4",
