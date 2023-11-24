@@ -1,4 +1,5 @@
 import { FormFields, FormInitState, FormState } from '../types/form-state';
+import { ValidatedField } from '../types/validator';
 
 export const prepareFormState = <IS extends FormInitState>(
   state: IS
@@ -21,7 +22,7 @@ export const combineFormState = <
   S extends FormState<IS>
 >(
   state: S,
-  validated: { [key in keyof IS]: boolean }
+  validated: { [key in keyof IS]: ValidatedField }
 ) =>
   Object.keys(state.fields).reduce(
     (acc, key) => ({
@@ -29,10 +30,16 @@ export const combineFormState = <
       [key]: {
         value: state.values[key],
         touched: state.fields[key].touched,
-        isValid: validated[key],
+        isValid: validated[key].isValid,
+        errors: validated[key].errors,
       },
     }),
     {} as {
-      [key in keyof IS]: { value: IS[key]; touched: boolean; isValid: boolean };
+      [key in keyof IS]: {
+        value: IS[key];
+        touched: boolean;
+        isValid: boolean;
+        errors: string[];
+      };
     }
   );

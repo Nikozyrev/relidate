@@ -3,15 +3,18 @@ import ReactDOM from 'react-dom/client';
 import { useForm } from '../hooks/use-form';
 import { required, minLength } from '../validators/validators';
 
+type state = {
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+const arePasswordsEqual = (v: string, s: state) =>
+  v === s.password || 'Not equal';
+
 function SignUpForm() {
   console.time('hook');
-  const {
-    fields: { email, password, confirmPassword },
-    register,
-    update,
-    touch,
-    isValid,
-  } = useForm({
+  const { fields, register, update, touch, isValid } = useForm({
     initialState: {
       email: '',
       password: '',
@@ -20,10 +23,12 @@ function SignUpForm() {
     validators: {
       email: [required],
       password: [required, minLength(8)],
-      confirmPassword: [required, (value, state) => value === state.password],
+      confirmPassword: [required, arePasswordsEqual],
     },
   });
+  const { email, password, confirmPassword } = fields;
   console.timeEnd('hook');
+  console.log(fields);
 
   return (
     <form style={styles.form}>
@@ -42,6 +47,7 @@ function SignUpForm() {
         onChange={(e) => update('password', e.target.value)}
         onBlur={() => touch('password')}
       />
+      {password.touched && password.errors[0]}
       <input
         type="password"
         placeholder="Confirm password"
@@ -49,6 +55,8 @@ function SignUpForm() {
         // Add conditional classes
         className={confirmPassword.isValid ? 'valid' : ''}
       />
+      {confirmPassword.touched && <p>{confirmPassword.errors[0]}</p>}
+
       <button type="submit" disabled={!isValid}>
         Sign Up
       </button>

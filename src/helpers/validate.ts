@@ -1,5 +1,6 @@
 import { FormFieldValue, FormInitState } from '../types/form-state';
-import { FormValidators, Validator } from '../types/validator';
+import { FormValidators, ValidatedField, Validator } from '../types/validator';
+import { getDefaultMsg } from '../validators/validators-list';
 
 export const validateField = <
   T extends FormFieldValue,
@@ -8,7 +9,24 @@ export const validateField = <
   validators: Validator<T, S>[] | undefined,
   value: T,
   state: S
-) => (validators ? validators.every((f) => f(value, state)) : true);
+) => {
+  const init: ValidatedField = {
+    isValid: true,
+    errors: [],
+  };
+
+  if (!validators) return init;
+
+  return validators.reduce<ValidatedField>((acc, f) => {
+    const res = f(value, state);
+    const isValid = res === true;
+    const msg = typeof res === 'string' ? res : getDefaultMsg(f);
+    return {
+      isValid: acc.isValid && isValid,
+      errors: isValid ? [...acc.errors] : [...acc.errors, msg],
+    };
+  }, init);
+};
 
 export const validateForm = <IS extends FormInitState>(
   state: IS,
@@ -20,9 +38,9 @@ export const validateForm = <IS extends FormInitState>(
       [k, validateField(validators && validators[k], v, state)] as const
   );
   const validatedState = Object.fromEntries(validated) as {
-    [key in keyof IS]: boolean;
+    [key in keyof IS]: ValidatedField;
   };
-  const isValid = validated.every(([_, isValid]) => isValid);
+  const isValid = validated.every(([_, field]) => field.isValid);
 
   return { validatedState, isValid };
 };
