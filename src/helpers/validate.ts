@@ -1,6 +1,7 @@
 import { FormFieldValue, FormInitState } from '../types/form-state';
 import { FormValidators, ValidatedField, Validator } from '../types/validator';
-import { getDefaultMsg } from '../validators/validators-list';
+
+const DEFAULT_MSG = 'Invalid';
 
 export const validateField = <
   T extends FormFieldValue,
@@ -20,7 +21,7 @@ export const validateField = <
   return validators.reduce<ValidatedField>((acc, f) => {
     const res = f(value, state);
     const isValid = res === true;
-    const msg = typeof res === 'string' ? res : getDefaultMsg(f);
+    const msg = typeof res === 'string' ? res : DEFAULT_MSG;
     return {
       isValid: acc.isValid && isValid,
       errors: isValid ? [...acc.errors] : [...acc.errors, msg],

@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { useForm } from '../hooks/use-form';
-import { required, minLength } from '../validators/validators';
+import { required, minLength, helpers } from '../validators/validators';
+
+const { withMessage } = helpers;
 
 type state = {
   email: string;
@@ -22,16 +24,14 @@ function SignUpForm() {
       agree: false,
     },
     validators: {
-      email: [required],
+      email: [withMessage('Надо', required)],
       password: [required, minLength(8)],
-      confirmPassword: [required, arePasswordsEqual],
+      confirmPassword: [required, withMessage('eq', arePasswordsEqual)],
     },
   });
   const { email, password, confirmPassword } = fields;
   console.timeEnd('hook');
   console.log(fields);
-
-  const t = register('agree', { valueKey: 'checked' });
 
   return (
     <form style={styles.form}>
@@ -42,6 +42,7 @@ function SignUpForm() {
         // Returns value, onChange, onBlur
         {...register('email')}
       />
+      {email.touched && email.errors[0]}
       <input
         type="password"
         placeholder="Password"
