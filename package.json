@@ -1,6 +1,6 @@
 {
   "name": "relidate",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Form validation library for React.",
   "keywords": [
     "react",

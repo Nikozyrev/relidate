@@ -24,7 +24,11 @@ export function SignUpForm() {
     validators: {
       email: [required],
       password: [required, minLength(8)],
-      confirmPassword: [required, (value, state) => value === state.password],
+      confirmPassword: [
+        required,
+        (value, state) =>
+          value === state.password || 'Passwords should be equal',
+      ],
     },
   });
 
@@ -49,9 +53,9 @@ export function SignUpForm() {
         type="password"
         placeholder="Confirm password"
         {...register('confirmPassword')}
-        // Add conditional classes
-        className={confirmPassword.isValid ? 'valid' : ''}
       />
+      // Show error
+      {confirmPassword.touched && <p>{confirmPassword.errors[0]}</p>}
       <button type="submit" disabled={!isValid}>
         Sign Up
       </button>
