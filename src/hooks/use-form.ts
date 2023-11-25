@@ -1,5 +1,5 @@
 import { useCallback, useReducer } from 'react';
-import { FormInitState } from '../types/form-state';
+import { FormInitState, RegisterObj, ValueKey } from '../types/form-state';
 import { FormValidators } from '../types/validator';
 import { ActionTypes } from '../types/form-actions';
 import { createReducer } from '../helpers/form-reducer';
@@ -57,12 +57,24 @@ export function useForm<IS extends FormInitState>({
 
   const getState = () => state.values;
 
-  const register = <T extends keyof IS>(field: T) => ({
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-      update(field, convertValue(initialState, field, e.target)),
-    onBlur: () => touch(field),
-    value: state.values[field],
-  });
+  const register = <
+    T extends keyof IS,
+    K extends ValueKey | undefined = undefined
+  >(
+    field: T,
+    options?: { valueKey?: K }
+  ): RegisterObj<T, IS, K> => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+      update(field, convertValue(initialState, field, e.target));
+    const onBlur = () => touch(field);
+    const value = state.values[field];
+    const key = options?.valueKey || 'value';
+    if (key === 'checked') {
+      return { checked: value, onChange, onBlur } as RegisterObj<T, IS, K>;
+    } else {
+      return { value, onChange, onBlur } as RegisterObj<T, IS, K>;
+    }
+  };
 
   return {
     fields,

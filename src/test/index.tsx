@@ -19,6 +19,7 @@ function SignUpForm() {
       email: '',
       password: '',
       confirmPassword: '',
+      agree: false,
     },
     validators: {
       email: [required],
@@ -29,6 +30,8 @@ function SignUpForm() {
   const { email, password, confirmPassword } = fields;
   console.timeEnd('hook');
   console.log(fields);
+
+  const t = register('agree', { valueKey: 'checked' });
 
   return (
     <form style={styles.form}>
@@ -56,6 +59,8 @@ function SignUpForm() {
         className={confirmPassword.isValid ? 'valid' : ''}
       />
       {confirmPassword.touched && <p>{confirmPassword.errors[0]}</p>}
+
+      <input type="checkbox" {...register('agree', { valueKey: 'checked' })} />
 
       <button type="submit" disabled={!isValid}>
         Sign Up

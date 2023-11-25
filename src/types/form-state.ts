@@ -20,3 +20,28 @@ export type FormState<S extends FormInitState> = {
   values: S;
   fields: FormFields<S>;
 };
+
+export type RegisterObjBase = {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur: () => void;
+};
+
+export type RegisterObjValue<T extends keyof IS, IS extends FormInitState> = {
+  value: IS[T];
+};
+
+export type RegisterObjChecked<T extends keyof IS, IS extends FormInitState> = {
+  checked: IS[T];
+};
+
+export type RegisterObj<
+  T extends keyof IS,
+  IS extends FormInitState,
+  K extends ValueKey | undefined
+> = K extends undefined
+  ? RegisterObjValue<T, IS> & RegisterObjBase
+  : K extends 'checked'
+  ? RegisterObjChecked<T, IS> & RegisterObjBase
+  : RegisterObjValue<T, IS> & RegisterObjBase;
+
+export type ValueKey = 'value' | 'checked';
