@@ -6,10 +6,11 @@ export enum ActionTypes {
   TOUCHED = 'TOUCHED',
 }
 
-export type FormAction<S extends FormInitState> =
+export type FormValuesAction<S extends FormInitState> =
   | FormActionUpdate<S>
-  | FormActionTouched<S>
   | FormActionReset;
+
+export type FormFieldsAction<S extends FormInitState> = FormActionTouched<S>;
 
 type FormActionUpdate<S extends FormInitState> = {
   type: ActionTypes.UPDATE;

@@ -1,10 +1,10 @@
 import { Reducer } from 'react';
 import { FormInitState } from '../types/form-state';
-import { FormAction, ActionTypes } from '../types/form-actions';
+import { FormValuesAction, ActionTypes } from '../types/form-actions';
 
 export function createValuesReducer<IS extends FormInitState>(
   initialState: IS
-): Reducer<IS, FormAction<IS>> {
+): Reducer<IS, FormValuesAction<IS>> {
   return (state, action) => {
     switch (action.type) {
       case ActionTypes.UPDATE:

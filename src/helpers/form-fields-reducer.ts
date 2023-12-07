@@ -1,10 +1,10 @@
 import { Reducer } from 'react';
 import { FormFields, FormInitState } from '../types/form-state';
-import { ActionTypes, FormAction } from '../types/form-actions';
+import { ActionTypes, FormFieldsAction } from '../types/form-actions';
 
 export function createFieldsReducer<IS extends FormInitState>(): Reducer<
   FormFields<IS>,
-  FormAction<IS>
+  FormFieldsAction<IS>
 > {
   return (state, action) => {
     switch (action.type) {
