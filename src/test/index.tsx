@@ -1,22 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { useForm } from '../hooks/use-form';
-import { required, minLength, helpers } from '../validators/validators';
-
-const { withMessage } = helpers;
+import { required as req, minLength, helpers } from '../validators/validators';
 
 type state = {
   email: string;
   password: string;
   confirmPassword: string;
+  agree: boolean;
 };
 
-const arePasswordsEqual = (v: string, s: state) =>
-  v === s.password || 'Not equal';
+const required = helpers.withMessage('Надо', req);
+
+const arePasswordsEqual = helpers.withMessage(
+  'Not equal',
+  (v: string, s: state) => v === s.password
+);
 
 function SignUpForm() {
   console.time('hook');
-  const { fields, register, update, touch, isValid } = useForm({
+  const { fields, register, update, touch, isValid } = useForm<state>({
     initialState: {
       email: '',
       password: '',
@@ -24,12 +27,12 @@ function SignUpForm() {
       agree: false,
     },
     validators: {
-      email: [withMessage('Надо', required)],
+      email: [required],
       password: [required, minLength(8)],
-      confirmPassword: [required, withMessage('eq', arePasswordsEqual)],
+      confirmPassword: [required, arePasswordsEqual],
     },
   });
-  const { email, password, confirmPassword } = fields;
+  const { email, password, confirmPassword, agree } = fields;
   console.timeEnd('hook');
   console.log(fields);
 
@@ -55,9 +58,8 @@ function SignUpForm() {
       <input
         type="password"
         placeholder="Confirm password"
-        {...register('confirmPassword')}
-        // Add conditional classes
         className={confirmPassword.isValid ? 'valid' : ''}
+        {...register('confirmPassword')}
       />
       {confirmPassword.touched && <p>{confirmPassword.errors[0]}</p>}
 

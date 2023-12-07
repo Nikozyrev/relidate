@@ -16,11 +16,6 @@ export type FormFields<S extends FormInitState> = {
   [key in keyof S]: FormFieldState;
 };
 
-export type FormState<S extends FormInitState> = {
-  values: S;
-  fields: FormFields<S>;
-};
-
 export type RegisterObjBase = {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur: () => void;
