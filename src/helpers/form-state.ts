@@ -1,5 +1,5 @@
 import { FormFields, FormInitState } from '../types/form-state';
-import { ValidatedField } from '../types/validator';
+import { ValidatedField, ValidationError } from '../types/validator';
 
 export const prepareFormFields = <IS extends FormInitState>(
   state: IS
@@ -38,7 +38,7 @@ export const combineFormState = <
         value: IS[key];
         touched: boolean;
         isValid: boolean;
-        errors: string[];
+        errors: ValidationError[];
       };
     }
   );

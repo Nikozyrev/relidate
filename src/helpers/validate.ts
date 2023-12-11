@@ -1,5 +1,10 @@
 import { FormFieldValue, FormInitState } from '../types/form-state';
-import { FormValidators, ValidatedField, Validator } from '../types/validator';
+import {
+  FieldValidators,
+  FormValidators,
+  ValidatedField,
+  Validator,
+} from '../types/validator';
 
 const DEFAULT_MSG = 'Invalid';
 
@@ -7,7 +12,7 @@ export const validateField = <
   T extends FormFieldValue,
   S extends FormInitState
 >(
-  validators: Validator<T, S>[] | undefined,
+  validators: FieldValidators<S, T> | undefined,
   value: T,
   state: S
 ) => {
@@ -18,15 +23,20 @@ export const validateField = <
 
   if (!validators) return init;
 
-  return validators.reduce<ValidatedField>((acc, f) => {
-    const res = f(value, state);
-    const isValid = res === true;
-    const msg = typeof res === 'string' ? res : DEFAULT_MSG;
-    return {
-      isValid: acc.isValid && isValid,
-      errors: isValid ? [...acc.errors] : [...acc.errors, msg],
-    };
-  }, init);
+  return Object.entries(validators).reduce<ValidatedField>(
+    (acc, [validator, validatorFunc]) => {
+      const res = validatorFunc(value, state);
+      const isValid = res === true;
+      const message = typeof res === 'string' ? res : DEFAULT_MSG;
+      return {
+        isValid: acc.isValid && isValid,
+        errors: isValid
+          ? [...acc.errors]
+          : [...acc.errors, { message, validator }],
+      };
+    },
+    init
+  );
 };
 
 export const validateForm = <IS extends FormInitState>(

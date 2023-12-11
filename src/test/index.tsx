@@ -27,9 +27,9 @@ function SignUpForm() {
       agree: false,
     },
     validators: {
-      email: [required],
-      password: [required, minLength(8)],
-      confirmPassword: [required, arePasswordsEqual],
+      email: { required },
+      password: { required, minLength: minLength(8) },
+      confirmPassword: { required, arePasswordsEqual },
     },
   });
   const { email, password, confirmPassword, agree } = fields;
@@ -45,7 +45,7 @@ function SignUpForm() {
         // Returns value, onChange, onBlur
         {...register('email')}
       />
-      {email.touched && email.errors[0]}
+      {email.touched && email.errors[0]?.message}
       <input
         type="password"
         placeholder="Password"
@@ -54,14 +54,14 @@ function SignUpForm() {
         onChange={(e) => update('password', e.target.value)}
         onBlur={() => touch('password')}
       />
-      {password.touched && password.errors[0]}
+      {password.touched && password.errors[0]?.message}
       <input
         type="password"
         placeholder="Confirm password"
         className={confirmPassword.isValid ? 'valid' : ''}
         {...register('confirmPassword')}
       />
-      {confirmPassword.touched && <p>{confirmPassword.errors[0]}</p>}
+      {confirmPassword.touched && <p>{confirmPassword.errors[0]?.message}</p>}
 
       <input type="checkbox" {...register('agree', { valueKey: 'checked' })} />
 
