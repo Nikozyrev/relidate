@@ -20,7 +20,7 @@ export function useFormValues<IS extends FormInitState>(initialState: IS) {
     []
   );
 
-  const reset = useCallback(
+  const resetValues = useCallback(
     () =>
       dispatch({
         type: ActionTypes.RESET,
@@ -34,6 +34,6 @@ export function useFormValues<IS extends FormInitState>(initialState: IS) {
     values,
     getState,
     update,
-    reset,
+    resetValues,
   };
 }

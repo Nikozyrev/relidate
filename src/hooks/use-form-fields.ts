@@ -22,8 +22,17 @@ export function useFormFields<IS extends FormInitState>(initialState: IS) {
     []
   );
 
+  const resetFields = useCallback(
+    () =>
+      dispatch({
+        type: ActionTypes.RESET,
+      }),
+    []
+  );
+
   return {
     fieldsStatus,
     touch,
+    resetFields,
   };
 }

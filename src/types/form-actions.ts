@@ -10,9 +10,11 @@ export type FormValuesAction<S extends FormInitState> =
   | FormActionUpdate<S>
   | FormActionReset;
 
-export type FormFieldsAction<S extends FormInitState> = FormActionTouched<S>;
+export type FormFieldsAction<S extends FormInitState> =
+  | FormActionTouched<S>
+  | FormActionReset;
 
-type FormActionUpdate<S extends FormInitState> = {
+export type FormActionUpdate<S extends FormInitState> = {
   type: ActionTypes.UPDATE;
   payload: {
     field: keyof S;
@@ -20,13 +22,13 @@ type FormActionUpdate<S extends FormInitState> = {
   };
 };
 
-type FormActionTouched<S extends FormInitState> = {
+export type FormActionTouched<S extends FormInitState> = {
   type: ActionTypes.TOUCHED;
   payload: {
     field: keyof S;
   };
 };
 
-type FormActionReset = {
+export type FormActionReset = {
   type: ActionTypes.RESET;
 };

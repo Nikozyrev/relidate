@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { FormInitState } from '../types/form-state';
 import { FormValidators } from '../types/validator';
 import { combineFormState } from '../helpers/form-state';
@@ -13,14 +14,19 @@ export function useForm<IS extends FormInitState>({
   initialState: IS;
   validators?: FormValidators<IS>;
 }) {
-  const { values, getState, reset, update } = useFormValues(initialState);
-  const { fieldsStatus, touch } = useFormFields(initialState);
+  const { values, getState, update, resetValues } = useFormValues(initialState);
+  const { fieldsStatus, touch, resetFields } = useFormFields(initialState);
 
   const { validatedState, isValid } = validateForm(values, validators);
 
   const fields = combineFormState(values, fieldsStatus, validatedState);
 
   const register = createRegister(initialState, values, update, touch);
+
+  const reset = useCallback(() => {
+    resetValues();
+    resetFields();
+  }, [resetValues, resetFields]);
 
   return {
     fields,

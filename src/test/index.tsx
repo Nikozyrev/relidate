@@ -19,7 +19,7 @@ const arePasswordsEqual = helpers.withMessage(
 
 function SignUpForm() {
   console.time('hook');
-  const { fields, register, update, touch, isValid } = useForm<state>({
+  const { fields, register, update, touch, isValid, reset } = useForm<state>({
     initialState: {
       email: '',
       password: '',
@@ -37,7 +37,13 @@ function SignUpForm() {
   console.log(fields);
 
   return (
-    <form style={styles.form}>
+    <form
+      style={styles.form}
+      onSubmit={(e) => {
+        e.preventDefault();
+        reset();
+      }}
+    >
       <h3>Sign Up</h3>
       <input
         type="email"
